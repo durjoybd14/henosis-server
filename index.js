@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 });
 
 // default error handler
-function errorHandler(req, res, err, next) {
+function errorHandler(err, req, res, next) {
   if (res.headerSent) {
     return next(err);
   }
