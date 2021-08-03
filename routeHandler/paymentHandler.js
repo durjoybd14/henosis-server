@@ -1,22 +1,30 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const router = express.Router();
-require("dotenv").config();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const paymentSchema = new mongoose.Schema({}, { strict: false });
-const Payment = new mongoose.model("Payment", paymentSchema);
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable prettier/prettier */
 
-router.post("/", (req, res) => {
+const express = require('express');
+
+const mongoose = require('mongoose');
+
+const router = express.Router();
+require('dotenv').config();
+
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+const paymentSchema = new mongoose.Schema({}, { strict: false });
+const Payment = new mongoose.model('Payment', paymentSchema);
+
+router.post('/', (req, res) => {
   const token = req.body;
   const newPayment = new Payment(req.body);
   newPayment.save((err) => {
     if (err) {
       res.status(500).json({
-        error: "There was a server side error!",
+        error: 'There was a server side error!',
       });
     } else {
       res.status(200).json({
-        message: "Payment story was recorded successfully!",
+        message: 'Payment story was recorded successfully!',
       });
     }
   });
@@ -26,27 +34,23 @@ router.post("/", (req, res) => {
       email: token.email,
       source: token.id,
     })
-    .then((customer) => {
-      return stripe.invoiceItems
+    .then((customer) => stripe.invoiceItems
         .create({
           amount: 60 * 100,
           customer: customer.id,
-          currency: "usd",
+          currency: 'usd',
           email: token.email,
         })
-        .then((invoiceItem) => {
-          return stripe.invoices.create({
-            collection_method: "send_invoice",
+        .then((invoiceItem) => stripe.invoices.create({
+            collection_method: 'send_invoice',
             customer: invoiceItem.customer,
             days_until_due: 10,
             email: token.email,
-          });
-        })
+          }))
 
         .catch((err) => {
           console.log(err);
-        });
-    });
+        }));
 });
 
 module.exports = router;

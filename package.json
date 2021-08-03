@@ -26,7 +26,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.4.0",
     "nodemon": "^2.0.12",
-    "stripe": "^8.167.0",
-    "prettier": "^2.3.2"
+    "prettier": "2.3.2",
+    "stripe": "^8.167.0"
   }
 }
