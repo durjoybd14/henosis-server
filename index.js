@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable prettier/prettier */
 // require packages
 const express = require('express');
@@ -46,12 +47,12 @@ const userWorkspacesN = io.of('/user-workspaces');
 userWorkspacesN.on('connection', userWorkspaces);
 
 // default error handler
-// function errorHandler(err, req, res, next) {
-//     if (res.headerSent) {
-//         return next(err);
-//     }
-//     res.status(500).json({ error: err });
-//     }
+function errorHandler(err, req, res, next) {
+    if (res.headerSent) {
+        return next(err);
+    }
+    res.status(500).json({ error: err });
+    }
 
 server.listen(port, () => {
     console.log(`Boss! I am listening to you at port:${port}`);
