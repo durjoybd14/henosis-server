@@ -5,6 +5,7 @@ const cors = require('cors');
 const { server, io, app } = require('./socket');
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
 require('dotenv').config();
+const paymentHandler = require('./routeHandler/paymentHandler');
 
 // server port
 const port = process.env.PORT || 5000;
@@ -15,23 +16,25 @@ app.use(cors());
 
 // database connection with mongoose
 mongoose
-    .connect(
-        `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ghclx.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
-        {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        },
-    )
-    .then(() => console.log('Database connected successfully'))
-    .catch((error) => console.log('ERROR', error));
+  .connect(
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ghclx.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => console.log("Database connected successfully"))
+  .catch((error) => console.log("ERROR", error));
 
-// application routes
+//application routes
+app.use("/payment", paymentHandler)
 
 // root route
 app.get('/', (req, res) => {
     res.send('Henosis server is running');
 });
 
+//workspace section
 const createWorkspaceN = io.of('/create-workspace');
 createWorkspaceN.on('connection', createWorkspace);
 
@@ -42,7 +45,6 @@ const userWorkspacesN = io.of('/user-workspaces');
 userWorkspacesN.on('connection', userWorkspaces);
 
 // default error handler
-// eslint-disable-next-line consistent-return
 function errorHandler(err, req, res, next) {
     if (res.headerSent) {
         return next(err);
