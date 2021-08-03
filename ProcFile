@@ -1,1 +1,1 @@
-web:node index.js && socket.js
+web:node index.js
