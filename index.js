@@ -2,7 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { server, io } = require('./socket');
+const { server, io, app } = require('./socket');
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
 require('dotenv').config();
 
@@ -10,9 +10,7 @@ require('dotenv').config();
 const port = process.env.PORT || 5000;
 
 // express app initialization
-const app = express();
 app.use(express.json());
-
 app.use(cors());
 
 // database connection with mongoose
