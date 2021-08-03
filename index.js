@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable consistent-return */
 /* eslint-disable prettier/prettier */
+
 // require packages
 const express = require('express');
 const mongoose = require('mongoose');
@@ -57,6 +58,10 @@ function errorHandler(err, req, res, next) {
 
 app.use(errorHandler);
 
-server.listen(port, () => {
+// server.listen(port, () => {
+//     console.log(`Boss! I am listening to you at port:${port}`);
+// });
+
+app.listen(port, () => {
     console.log(`Boss! I am listening to you at port:${port}`);
 });
