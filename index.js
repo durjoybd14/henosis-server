@@ -1,7 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable consistent-return */
-/* eslint-disable prettier/prettier */
-
 // require packages
 const express = require('express');
 const mongoose = require('mongoose');
@@ -9,7 +5,6 @@ const cors = require('cors');
 const { server, io, app } = require('./socket');
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
 require('dotenv').config();
-const paymentHandler = require('./routeHandler/paymentHandler');
 
 // server port
 const port = process.env.PORT || 5000;
@@ -30,9 +25,6 @@ mongoose
     .then(() => console.log('Database connected successfully'))
     .catch((error) => console.log('ERROR', error));
 
-// application routes
-app.use('/payment', paymentHandler);
-
 // root route
 app.get('/', (req, res) => {
     res.send('Henosis server is running');
@@ -49,14 +41,13 @@ const userWorkspacesN = io.of('/user-workspaces');
 userWorkspacesN.on('connection', userWorkspaces);
 
 // default error handler
+// eslint-disable-next-line consistent-return
 function errorHandler(err, req, res, next) {
     if (res.headerSent) {
         return next(err);
     }
     res.status(500).json({ error: err });
-    }
-
-app.use(errorHandler);
+}
 
 server.listen(port, () => {
     console.log(`Boss! I am listening to you at port:${port}`);
