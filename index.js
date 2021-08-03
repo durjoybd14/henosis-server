@@ -55,6 +55,8 @@ function errorHandler(err, req, res, next) {
     res.status(500).json({ error: err });
     }
 
+app.use(errorHandler);
+
 server.listen(port, () => {
     console.log(`Boss! I am listening to you at port:${port}`);
 });
