@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable consistent-return */
 /* eslint-disable prettier/prettier */
 // require packages
