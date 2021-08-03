@@ -9,4 +9,4 @@ const io = new Server(server, {
     cors: { origin: '*' },
 });
 
-module.exports = { server, io };
+module.exports = { server, io, app };
