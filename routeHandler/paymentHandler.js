@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable quotes */
+/* eslint-disable prettier/prettier */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable prettier/prettier */
 
@@ -9,7 +11,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 require('dotenv').config();
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')("sk_test_51IeGjvINoMfSFYtpwj9kSP12Cxjd1HvPxEbDKRyPgxAHUcjT1Cb9IL8ek8fCBlXX7g4H6dRasKV8vVMFZc21nd3N00I1ai6Fdj");
 
 const paymentSchema = new mongoose.Schema({}, { strict: false });
 const Payment = new mongoose.model('Payment', paymentSchema);
