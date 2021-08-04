@@ -6,7 +6,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { server, io, app } = require('./socket');
+const { server, io, app } = require('./socket/socket');
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
 require('dotenv').config();
 const paymentHandler = require('./routeHandler/paymentHandler');
