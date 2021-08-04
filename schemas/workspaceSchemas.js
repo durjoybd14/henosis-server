@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const { Schema } = require('mongoose');
 
 const workspaceSchema = Schema({
