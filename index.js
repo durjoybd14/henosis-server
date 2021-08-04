@@ -3,6 +3,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const paymentHandler = require('./routeHandler/paymentHandler');
 const { server, io, app } = require('./socket/socket');
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
 require('dotenv').config();
@@ -26,7 +27,9 @@ mongoose
     .then(() => console.log('Database connected successfully'))
     .catch((error) => console.log('ERROR', error));
 
-// root route
+// all routes
+app.use('/payment', paymentHandler);
+
 app.get('/', (req, res) => {
     res.send('Henosis server is running');
 });
