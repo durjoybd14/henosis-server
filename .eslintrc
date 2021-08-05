@@ -8,6 +8,7 @@
     "node": true
   },
   "rules": {
+    "arrow-body-style": "off",
     "no-underscore-dangle": "off",
     "new-cap": 0,
     "no-console": 0,
