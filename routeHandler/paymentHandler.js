@@ -1,6 +1,7 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable arrow-body-style */
 /* eslint-disable quotes */
-/* eslint-disable prettier/prettier */
+
 const express = require("express");
 
 const mongoose = require("mongoose");
