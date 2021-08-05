@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
 const mongoose = require('mongoose');
+
 const workspaceSchema = require('../schemas/workspaceSchemas');
 
 const Workspace = new mongoose.model('workspace', workspaceSchema);

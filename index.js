@@ -1,11 +1,17 @@
-/* eslint-disable prettier/prettier */
 // require packages
+
 const express = require('express');
+
 const mongoose = require('mongoose');
+
 const cors = require('cors');
+
 const paymentHandler = require('./routeHandler/paymentHandler');
+
 const { server, io, app } = require('./socket/socket');
+
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
+
 require('dotenv').config();
 
 // server port
