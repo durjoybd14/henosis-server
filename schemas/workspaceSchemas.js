@@ -2,6 +2,8 @@
 const { Schema } = require('mongoose');
 
 const workspaceSchema = Schema({
+    companyName: String,
+    companyEmail: String,
     workspaceName: String,
     type: String,
     members: [
