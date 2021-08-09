@@ -1,18 +1,13 @@
 // require packages
-
 const express = require('express');
-
 const mongoose = require('mongoose');
-
 const cors = require('cors');
+require('dotenv').config();
 
 const paymentHandler = require('./routeHandler/paymentHandler');
-
 const { server, io, app } = require('./socket/socket');
-
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
-
-require('dotenv').config();
+const { handleSprint } = require('./socketHandler/sprint');
 
 // server port
 const port = process.env.PORT || 5000;
@@ -41,14 +36,14 @@ app.get('/', (req, res) => {
 });
 
 // workspace section
-const createWorkspaceN = io.of('/create-workspace');
-createWorkspaceN.on('connection', createWorkspace);
+io.of('/create-workspace').on('connection', createWorkspace);
 
-const singleWorkspaceN = io.of('/workspace');
-singleWorkspaceN.on('connection', singleWorkspace);
+io.of('/workspace').on('connection', singleWorkspace);
 
-const userWorkspacesN = io.of('/user-workspaces');
-userWorkspacesN.on('connection', userWorkspaces);
+io.of('/user-workspaces').on('connection', userWorkspaces);
+
+// sprint section
+io.of('/sprint').on('connection', handleSprint);
 
 // default error handler
 // eslint-disable-next-line consistent-return
@@ -60,6 +55,7 @@ function errorHandler(err, req, res, next) {
 }
 
 app.use(errorHandler);
+
 server.listen(port, () => {
     console.log(`Boss! I am listening to you at port:${port}`);
 });
