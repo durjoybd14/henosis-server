@@ -5,6 +5,9 @@ const cors = require('cors');
 require('dotenv').config();
 
 const paymentHandler = require('./routeHandler/paymentHandler');
+
+const userHandler = require('./routeHandler/userHandler');
+
 const { server, io, app } = require('./socket/socket');
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
 const { handleSprint } = require('./socketHandler/sprint');
@@ -30,6 +33,7 @@ mongoose
 
 // all routes
 app.use('/payment', paymentHandler);
+app.use('/user', userHandler);
 
 app.get('/', (req, res) => {
     res.send('Henosis server is running');

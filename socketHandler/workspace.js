@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const nodemailer = require('nodemailer');
 
 const workspaceSchema = require('../schemas/workspaceSchemas');
