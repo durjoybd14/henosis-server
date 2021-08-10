@@ -6,8 +6,8 @@ const sprintSchema = Schema({
         {
             taskName: String,
             currentStatus: String,
-            taskTime: String,
-            assignedMember: String,
+            dueDate: Date,
+            assignedMember: [String],
         },
     ],
     sprintName: String,

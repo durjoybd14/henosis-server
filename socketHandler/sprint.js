@@ -30,6 +30,20 @@ const handleSprint = (socket) => {
             }
         });
     });
+
+    socket.on('add-task', async (_id, tasks) => {
+        const data = await Sprint.findByIdAndUpdate(
+            { _id },
+            { $set: { tasks } },
+            { useFindAndModify: false },
+            (error) => {
+                if (error) {
+                    console.log(error);
+                }
+            },
+        );
+        io.of('/sprint').in(data.workspaceId).emit('added-task', data.tasks);
+    });
 };
 
 module.exports = { handleSprint };
