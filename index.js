@@ -8,6 +8,8 @@ const paymentHandler = require('./routeHandler/paymentHandler');
 
 const userHandler = require('./routeHandler/userHandler');
 
+const adminHandler = require('./routeHandler/adminHandler');
+
 const { server, io, app } = require('./socket/socket');
 const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
 const { handleSprint } = require('./socketHandler/sprint');
@@ -34,6 +36,7 @@ mongoose
 // all routes
 app.use('/payment', paymentHandler);
 app.use('/user', userHandler);
+app.use('/admin', adminHandler);
 
 app.get('/', (req, res) => {
     res.send('Henosis server is running');
