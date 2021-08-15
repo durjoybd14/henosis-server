@@ -24,7 +24,7 @@
 - Clone first `git clone https://github.com/nrd141913/henosis-server henosis-server`
 - `cd henosis-server`
 - run command `npm install`
-- run command `npm start:dev`
+- run command `npm run dev`
 - browse: http://localhost:5000 for seeing main application views
 
 # Features
