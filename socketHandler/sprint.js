@@ -35,25 +35,29 @@ const handleSprint = (socket) => {
         });
     });
 
-    socket.on('add-task', async (_id, tasks) => {
+    socket.on('add-task', async (_id, tasks, user) => {
         const data = await Sprint.findByIdAndUpdate(
             { _id },
             { $set: { tasks } },
-            { useFindAndModify: false },
+            { useFindAndModify: false, new: true },
             (error) => {
                 if (error) {
                     console.log(error);
                 }
             },
         );
-        io.of('/sprint').in(data.workspaceId).emit('added-task', data.tasks);
+        if (user) {
+            io.of('/sprint').in(data.workspaceId).emit('added-task', data.tasks, user);
+        } else {
+            socket.to(data.workspaceId).emit('added-task', data.tasks);
+        }
     });
 
     socket.on('add-member', async (_id, members) => {
         const data = await Workspace.findByIdAndUpdate(
             { _id },
             { $set: { members } },
-            { useFindAndModify: false },
+            { useFindAndModify: false, new: true },
             (error) => {
                 if (error) {
                     console.log(error);
