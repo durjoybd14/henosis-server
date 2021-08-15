@@ -1,16 +1,14 @@
-const express = require('express');
-
-const mongoose = require('mongoose');
+import express from 'express';
+import mongoose from 'mongoose';
+import adminSchemas from '../schemas/adminSchemas';
 
 const router = express.Router();
 
-const adminSchemas = require('../schemas/adminSchemas');
-
-const Admins = new mongoose.model('Admins', adminSchemas);
+const Admins = mongoose.model('Admins', adminSchemas);
 
 router.post('/', (req, res) => {
     const newAdmin = new Admins(req.body);
-    newAdmin.save((err) => {
+    newAdmin.save((err: mongoose.CallbackError) => {
         if (err) {
             res.status(500).json({
                 error: 'There was a server side error!',
@@ -38,4 +36,4 @@ router.get('/', (req, res) => {
     });
 });
 
-module.exports = router;
+export default router;

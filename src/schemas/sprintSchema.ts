@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const sprintSchema = Schema({
+const sprintSchema = new Schema({
     status: [String],
     tasks: [
         {
@@ -17,4 +17,4 @@ const sprintSchema = Schema({
     goals: [String],
 });
 
-module.exports = sprintSchema;
+export default sprintSchema;

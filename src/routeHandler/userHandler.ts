@@ -1,16 +1,14 @@
-const express = require('express');
-
-const mongoose = require('mongoose');
+import express from 'express';
+import mongoose from 'mongoose';
+import userSchema from '../schemas/userSchemas';
 
 const router = express.Router();
 
-const userSchema = require('../schemas/userSchemas');
-
-const User = new mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
 router.post('/', (req, res) => {
     const user = new User(req.body);
-    user.save((err) => {
+    user.save((err: mongoose.CallbackError) => {
         if (err) {
             res.status(500).json({
                 error: 'There was a server side error!',
@@ -22,6 +20,7 @@ router.post('/', (req, res) => {
         }
     });
 });
+
 router.get('/', (req, res) => {
     User.find({}, (err, data) => {
         if (err) {
@@ -37,4 +36,4 @@ router.get('/', (req, res) => {
     });
 });
 
-module.exports = router;
+export default router;

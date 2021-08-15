@@ -1,19 +1,18 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import nodemailer from 'nodemailer';
+import workspaceSchema from '../schemas/workspaceSchemas';
+import { ISocket } from '../socket/socket';
 
-const nodemailer = require('nodemailer');
+const Workspace = mongoose.model('workspace', workspaceSchema);
 
-const workspaceSchema = require('../schemas/workspaceSchemas');
-
-const Workspace = new mongoose.model('workspace', workspaceSchema);
-
-const createWorkspace = (socket) => {
+export const createWorkspace = (socket: ISocket): void => {
     socket.on('create-workspace', async (workspace) => {
         const newWorkspaceData = { ...workspace };
         if (workspace.memberEmail) {
             delete newWorkspaceData.memberEmail;
         }
         const newWorkspace = new Workspace(newWorkspaceData);
-        await newWorkspace.save((error, result) => {
+        await newWorkspace.save((error: mongoose.CallbackError, result: any) => {
             if (error) {
                 console.log(error);
             } else {
@@ -23,7 +22,7 @@ const createWorkspace = (socket) => {
     });
 };
 
-const singleWorkspace = (socket) => {
+export const singleWorkspace = (socket: ISocket): void => {
     socket.on('workspace', async ({ id, userEmail }) => {
         await Workspace.find({ _id: id }, (error, result) => {
             if (error) {
@@ -34,11 +33,13 @@ const singleWorkspace = (socket) => {
                         : 'Server side Error',
                 );
             } else if (result[0]) {
-                const isAuthorized = result[0].members.find((member) => member.email === userEmail);
+                const isAuthorized = result[0].members.find(
+                    (member: any) => member.email === userEmail,
+                );
                 if (isAuthorized) {
                     socket.emit('workspace-receive', result[0]);
                 } else {
-                    const creator = result[0].members.find((member) => member.isCreator);
+                    const creator = result[0].members.find((member: any) => member.isCreator);
                     socket.emit(
                         'workspace-error',
                         'Access denied: Unauthorized',
@@ -93,7 +94,7 @@ const singleWorkspace = (socket) => {
     });
 };
 
-const userWorkspaces = (socket) => {
+export const userWorkspaces = (socket: ISocket): void => {
     socket.on('request-user-workspaces', async (email) => {
         await Workspace.find({ 'members.email': email }, (error, result) => {
             if (error) {
@@ -104,5 +105,3 @@ const userWorkspaces = (socket) => {
         });
     });
 };
-
-module.exports = { createWorkspace, singleWorkspace, userWorkspaces };
