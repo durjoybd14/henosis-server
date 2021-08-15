@@ -1,23 +1,17 @@
-// require packages
-const express = require('express');
+// import packages
+import cors from 'cors';
+import { config } from 'dotenv';
+import express, { NextFunction, Request, Response } from 'express';
+import mongoose from 'mongoose';
+import adminHandler from './routeHandler/adminHandler';
+// import paymentHandler from './routeHandler/paymentHandler';
+import userHandler from './routeHandler/userHandler';
+import workspaceHandler from './routeHandler/workspaceHandler';
+import { app, io, server } from './socket/socket';
+import handleSprint from './socketHandler/sprint';
+import { createWorkspace, singleWorkspace, userWorkspaces } from './socketHandler/workspace';
 
-const mongoose = require('mongoose');
-
-const cors = require('cors');
-
-require('dotenv').config();
-
-const paymentHandler = require('./routeHandler/paymentHandler');
-
-const userHandler = require('./routeHandler/userHandler');
-
-const adminHandler = require('./routeHandler/adminHandler');
-
-const workspaceHandler = require('./routeHandler/workspaceHandler');
-
-const { server, io, app } = require('./socket/socket');
-const { createWorkspace, singleWorkspace, userWorkspaces } = require('./socketHandler/workspace');
-const { handleSprint } = require('./socketHandler/sprint');
+config();
 
 // server port
 const port = process.env.PORT || 5000;
@@ -39,20 +33,18 @@ mongoose
     .catch((error) => console.log('ERROR', error));
 
 // all routes
-app.use('/payment', paymentHandler);
+// app.use('/payment', paymentHandler);
 app.use('/user', userHandler);
 app.use('/admin', adminHandler);
 app.use('/workspace', workspaceHandler);
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.send('Henosis server is running');
 });
 
 // workspace section
 io.of('/create-workspace').on('connection', createWorkspace);
-
 io.of('/workspace').on('connection', singleWorkspace);
-
 io.of('/user-workspaces').on('connection', userWorkspaces);
 
 // sprint section
@@ -60,7 +52,7 @@ io.of('/sprint').on('connection', handleSprint);
 
 // default error handler
 // eslint-disable-next-line consistent-return
-function errorHandler(err, req, res, next) {
+function errorHandler(err: Error, req: Request, res: any, next: NextFunction) {
     if (res.headerSent) {
         return next(err);
     }

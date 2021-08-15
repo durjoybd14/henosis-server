@@ -1,20 +1,20 @@
-const express = require('express');
-
-const mongoose = require('mongoose');
+import { config } from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import stripeJs from 'stripe';
 
 const router = express.Router();
+config();
 
-require('dotenv').config();
-
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = new stripeJs(process.env.STRIPE_SECRET_KEY as string);
 
 const paymentSchema = new mongoose.Schema({}, { strict: false });
-const Payment = new mongoose.model('Payment', paymentSchema);
+const Payment = mongoose.model('Payment', paymentSchema);
 
 router.post('/', (req, res) => {
     const token = req.body;
     const newPayment = new Payment(req.body);
-    newPayment.save((err) => {
+    newPayment.save((err: mongoose.CallbackError) => {
         if (err) {
             res.status(500).json({
                 error: 'There was a server side error!',
@@ -53,4 +53,4 @@ router.post('/', (req, res) => {
         });
 });
 
-module.exports = router;
+export default router;

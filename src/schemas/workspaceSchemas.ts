@@ -1,6 +1,6 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const workspaceSchema = Schema({
+const workspaceSchema = new Schema({
     companyName: String,
     companyEmail: String,
     workspaceName: String,
@@ -16,4 +16,4 @@ const workspaceSchema = Schema({
     ],
 });
 
-module.exports = workspaceSchema;
+export default workspaceSchema;

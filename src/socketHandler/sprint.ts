@@ -1,21 +1,19 @@
-const mongoose = require('mongoose');
-const sprintSchema = require('../schemas/sprintSchema');
-const { io } = require('../socket/socket');
+import mongoose from 'mongoose';
+import sprintSchema from '../schemas/sprintSchema';
+import workspaceSchema from '../schemas/workspaceSchemas';
+import { io, ISocket } from '../socket/socket';
 
-const Sprint = new mongoose.model('sprint', sprintSchema);
+const Sprint = mongoose.model('sprint', sprintSchema);
+const Workspace = mongoose.model('workspace', workspaceSchema);
 
-const workspaceSchema = require('../schemas/workspaceSchemas');
-
-const Workspace = new mongoose.model('workspace', workspaceSchema);
-
-const handleSprint = (socket) => {
+const handleSprint = (socket: ISocket): void => {
     socket.on('join-sprint', (id) => {
         socket.join(id);
     });
 
     socket.on('create-sprint', async (sprint) => {
         const newSprint = new Sprint(sprint);
-        await newSprint.save((error, result) => {
+        await newSprint.save((error: mongoose.CallbackError, result: any) => {
             if (error) {
                 console.log(error);
             } else {
@@ -68,4 +66,4 @@ const handleSprint = (socket) => {
     });
 };
 
-module.exports = { handleSprint };
+export default handleSprint;

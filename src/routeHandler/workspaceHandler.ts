@@ -1,12 +1,10 @@
-const express = require('express');
-
-const mongoose = require('mongoose');
+import express from 'express';
+import mongoose from 'mongoose';
+import workspaceSchema from '../schemas/workspaceSchemas';
 
 const router = express.Router();
 
-const workspaceSchema = require('../schemas/workspaceSchemas');
-
-const Workspace = new mongoose.model('Workspace', workspaceSchema);
+const Workspace = mongoose.model('Workspace', workspaceSchema);
 
 router.get('/all', (req, res) => {
     Workspace.find({}, (err, data) => {
@@ -51,4 +49,4 @@ router.get('/business', (req, res) => {
     });
 });
 
-module.exports = router;
+export default router;
