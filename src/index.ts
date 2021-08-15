@@ -52,8 +52,8 @@ io.of('/sprint').on('connection', handleSprint);
 
 // default error handler
 // eslint-disable-next-line consistent-return
-function errorHandler(err: Error, req: Request, res: any, next: NextFunction) {
-    if (res.headerSent) {
+function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+    if (res.headersSent) {
         return next(err);
     }
     res.status(500).json({ error: err });
@@ -62,5 +62,5 @@ function errorHandler(err: Error, req: Request, res: any, next: NextFunction) {
 app.use(errorHandler);
 
 server.listen(port, () => {
-    console.log(`Boss! I am listening to you at port:${port}`);
+    console.log(`Boss! I am listening at http://localhost:${port}`);
 });
