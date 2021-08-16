@@ -1,12 +1,14 @@
 import { config } from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
-import stripeJs from 'stripe';
+import Stripe from 'stripe';
 
 const router = express.Router();
 config();
 
-const stripe = new stripeJs(process.env.STRIPE_SECRET_KEY as string);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+    apiVersion: '2020-08-27',
+});
 
 const paymentSchema = new mongoose.Schema({}, { strict: false });
 const Payment = mongoose.model('Payment', paymentSchema);
@@ -31,25 +33,22 @@ router.post('/', (req, res) => {
             email: token.email,
             source: token.id,
         })
-        .then((customer) => {
-            return stripe.invoiceItems
-                .create({
+        // eslint-disable-next-line consistent-return
+        .then(async (customer) => {
+            try {
+                const invoiceItem = await stripe.invoiceItems.create({
                     amount: 60 * 100,
                     customer: customer.id,
                     currency: 'usd',
-                })
-                .then((invoiceItem) => {
-                    return stripe.invoices.create({
-                        collection_method: 'send_invoice',
-                        customer: invoiceItem.customer,
-                        days_until_due: 10,
-                        email: token.email,
-                    });
-                })
-
-                .catch((err) => {
-                    console.log(err);
                 });
+                return await stripe.invoices.create({
+                    collection_method: 'send_invoice',
+                    customer: invoiceItem.customer as string,
+                    days_until_due: 10,
+                });
+            } catch (err) {
+                console.log(err);
+            }
         });
 });
 
