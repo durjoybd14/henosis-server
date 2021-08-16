@@ -4,7 +4,7 @@ import { config } from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import adminHandler from './routeHandler/adminHandler';
-// import paymentHandler from './routeHandler/paymentHandler';
+import paymentHandler from './routeHandler/paymentHandler';
 import userHandler from './routeHandler/userHandler';
 import workspaceHandler from './routeHandler/workspaceHandler';
 import { app, io, server } from './socket/socket';
@@ -33,7 +33,7 @@ mongoose
     .catch((error: mongoose.CallbackError) => console.log('ERROR', error));
 
 // all routes
-// app.use('/payment', paymentHandler);
+app.use('/payment', paymentHandler);
 app.use('/user', userHandler);
 app.use('/admin', adminHandler);
 app.use('/workspace', workspaceHandler);

@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import nodemailer from 'nodemailer';
-import IUser from '../interfaces/userInterface';
 import IWorkspace from '../interfaces/workspaceInterface';
 import workspaceSchema from '../schemas/workspaceSchemas';
+import sendMail, { IMailData } from '../sendMail/sendMail';
 import { ISocket } from '../socket/socket';
 
 const Workspace = mongoose.model('workspace', workspaceSchema);
@@ -54,49 +53,23 @@ export const singleWorkspace = (socket: ISocket): void => {
             }
         });
     });
-    socket.on(
-        'send-access-email',
-        async ({ email, name }: IUser, creatorEmail: string, workspaceName: string) => {
-            const testAccount = await nodemailer.createTestAccount();
 
-            const transporter = nodemailer.createTransport({
-                host: 'smtp.ethereal.email',
-                port: 587,
-                secure: false,
-                auth: {
-                    user: testAccount.user,
-                    pass: testAccount.pass,
-                },
-                tls: {
-                    rejectUnauthorized: false,
-                },
-            });
-
-            try {
-                const info = await transporter.sendMail({
-                    from: '<henosisbd@gmail.com>',
-                    to: creatorEmail,
-                    subject: 'Send Access Request',
-                    text: 'Henosis',
-                    html: `
-                <b>${name} Send an access Request For ${workspaceName} workspace</b>
-                <br/>
-                <br/>
-                <b>User Details</b>
-                <ul>
-                    <li>name: ${name}</li>
-                    <li>email: ${email}</li>
-                </ul>
-                `,
+    socket.on('send-access-email', async (mailData: IMailData) => {
+        try {
+            const messageId = await sendMail(mailData);
+            if (messageId) {
+                socket.emit('mail-sended', {
+                    message: 'Mail Sended Successfully!',
+                    isSended: true,
                 });
-                socket.emit('mail-sended', 'Mail Sended Successfully');
-                console.log('Message sent: %s', info.messageId);
-                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-            } catch (err) {
-                console.log(err);
             }
-        },
-    );
+        } catch {
+            socket.emit('mail-sended', {
+                message: 'Mail Not Sended Successfully!',
+                isSended: false,
+            });
+        }
+    });
 };
 
 export const userWorkspaces = (socket: ISocket): void => {
