@@ -9,6 +9,9 @@ export interface IMailData {
     toEmail: string;
     workspaceName: string;
     id: string;
+    origin: string;
+    path?: string;
+    previousMails: string[];
 }
 
 const sendMail = async ({
@@ -17,6 +20,8 @@ const sendMail = async ({
     toEmail,
     workspaceName,
     id,
+    origin,
+    path,
 }: IMailData): Promise<string> => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -30,7 +35,7 @@ const sendMail = async ({
             rejectUnauthorized: false,
         },
     });
-
+    const pathname = path ? `/${path}?id=${id}` : `/workspaces/${id}/acceptRequest?email=${email}`;
     const info = await transporter.sendMail({
         from: `Henosis <${process.env.AUTH_EMAIL}>`,
         to: toEmail,
@@ -50,7 +55,7 @@ const sendMail = async ({
             <b>For Accept The Request Go The Bellow Link</b>
             <br />
             <br />
-            <b>http://localhost:3000/workspaces/${id}/acceptRequest?email=${email}</b>
+            <b>${origin}${pathname}</b>
             `,
     });
     return info.messageId;
