@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import { ISprint, ITask } from '../interfaces/sprintInterface';
+import IUser from '../interfaces/userInterface';
+import IWorkspace from '../interfaces/workspaceInterface';
 import sprintSchema from '../schemas/sprintSchema';
 import workspaceSchema from '../schemas/workspaceSchemas';
 import { io, ISocket } from '../socket/socket';
@@ -11,9 +14,9 @@ const handleSprint = (socket: ISocket): void => {
         socket.join(id);
     });
 
-    socket.on('create-sprint', async (sprint) => {
+    socket.on('create-sprint', async (sprint: ISprint) => {
         const newSprint = new Sprint(sprint);
-        await newSprint.save((error: mongoose.CallbackError, result: any) => {
+        await newSprint.save((error: mongoose.CallbackError, result: ISprint) => {
             if (error) {
                 console.log(error);
             } else {
@@ -22,9 +25,9 @@ const handleSprint = (socket: ISocket): void => {
         });
     });
 
-    socket.on('current-sprint', async (workspaceId) => {
+    socket.on('current-sprint', async (workspaceId: string) => {
         const date = new Date();
-        await Sprint.find({ workspaceId, endDate: { $gte: date } }, (error, result) => {
+        await Sprint.find({ workspaceId, endDate: { $gte: date } }, (error, result: ISprint[]) => {
             if (error) {
                 console.log(error);
             } else {
@@ -33,8 +36,8 @@ const handleSprint = (socket: ISocket): void => {
         });
     });
 
-    socket.on('add-task', async (_id, tasks, user) => {
-        const data = await Sprint.findByIdAndUpdate(
+    socket.on('add-task', async (_id: string, tasks: ITask[], user: IUser) => {
+        const data: ISprint = await Sprint.findByIdAndUpdate(
             { _id },
             { $set: { tasks } },
             { useFindAndModify: false, new: true },
@@ -52,7 +55,7 @@ const handleSprint = (socket: ISocket): void => {
     });
 
     socket.on('add-member', async (_id, members) => {
-        const data = await Workspace.findByIdAndUpdate(
+        const data: IWorkspace = await Workspace.findByIdAndUpdate(
             { _id },
             { $set: { members } },
             { useFindAndModify: false, new: true },

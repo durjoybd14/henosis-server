@@ -30,7 +30,7 @@ mongoose
         },
     )
     .then(() => console.log('Database connected successfully'))
-    .catch((error) => console.log('ERROR', error));
+    .catch((error: mongoose.CallbackError) => console.log('ERROR', error));
 
 // all routes
 // app.use('/payment', paymentHandler);
