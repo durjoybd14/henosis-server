@@ -12,6 +12,7 @@ interface IWorkspace {
     companyEmail?: string;
     memberEmail?: string;
     members: IMember[];
+    previousMails: string[];
 }
 
 export default IWorkspace;

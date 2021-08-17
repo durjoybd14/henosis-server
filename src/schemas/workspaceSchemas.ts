@@ -5,6 +5,7 @@ const workspaceSchema = new Schema({
     companyEmail: String,
     workspaceName: String,
     type: String,
+    previousMails: [String],
     members: [
         {
             isCreator: Boolean,
