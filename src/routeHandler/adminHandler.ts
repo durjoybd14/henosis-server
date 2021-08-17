@@ -36,4 +36,18 @@ router.get('/', (req, res) => {
     });
 });
 
+router.delete('/:id', (req, res) => {
+    Admins.deleteOne({ _id: req.params.id }, (err) => {
+        if (err) {
+            res.status(500).json({
+                error: 'There was a server side error!',
+            });
+        } else {
+            res.status(200).json({
+                message: 'Admin was deleted successfully!',
+            });
+        }
+    });
+});
+
 export default router;
