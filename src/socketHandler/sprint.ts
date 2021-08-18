@@ -67,6 +67,20 @@ const handleSprint = (socket: ISocket): void => {
         );
         io.of('/sprint').in(_id).emit('added-member', data.members);
     });
+
+    socket.on('add-status', async (_id: string, status: string[]) => {
+        const data: ISprint = await Sprint.findByIdAndUpdate(
+            { _id },
+            { $set: { status } },
+            { useFindAndModify: false, new: true },
+            (error) => {
+                if (error) {
+                    console.log(error);
+                }
+            },
+        );
+        io.of('/sprint').in(data.workspaceId).emit('added-status', data.status);
+    });
 };
 
 export default handleSprint;
