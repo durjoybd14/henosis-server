@@ -3,19 +3,24 @@ import mongoose from 'mongoose';
 import userSchema from '../schemas/userSchemas';
 
 const router = express.Router();
-
 const User = mongoose.model('User', userSchema);
 
 router.post('/', (req, res) => {
-    const user = new User(req.body);
-    user.save((err: mongoose.CallbackError) => {
-        if (err) {
-            res.status(500).json({
-                error: 'There was a server side error!',
-            });
+    User.findOne({ email: req.body.email }).then((existEmail: string) => {
+        if (existEmail) {
+            console.log('User data already exist');
         } else {
-            res.status(200).json({
-                message: 'New User info was recorded successfully!',
+            const user = new User(req.body);
+            user.save((err: mongoose.CallbackError) => {
+                if (err) {
+                    res.status(500).json({
+                        error: 'There was a server side error!',
+                    });
+                } else {
+                    res.status(200).json({
+                        message: 'New User info was recorded successfully!',
+                    });
+                }
             });
         }
     });
@@ -34,6 +39,20 @@ router.get('/', (req, res) => {
             });
         }
     });
+});
+
+router.get('/:email', async (req, res) => {
+    try {
+        const data = await User.find({ email: req.params.email });
+        res.status(200).json({
+            data,
+            message: 'User Profile info collected successfully!',
+        });
+    } catch (err) {
+        res.status(500).json({
+            error: 'There was a server side error!',
+        });
+    }
 });
 
 export default router;
