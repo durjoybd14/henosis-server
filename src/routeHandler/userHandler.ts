@@ -55,4 +55,34 @@ router.get('/:email', async (req, res) => {
     }
 });
 
+router.put('/:email', (req, res) => {
+    const result = User.findOneAndUpdate(
+        { email: req.params.email },
+        {
+            $set: {
+                imageURL: req.body.imageURL,
+                githubLink: req.body.githubLink,
+                location: req.body.location,
+                bio: req.body.bio,
+            },
+        },
+        {
+            new: true,
+            useFindAndModify: false,
+        },
+        (err) => {
+            if (err) {
+                res.status(500).json({
+                    error: 'There was a server side error!',
+                });
+            } else {
+                res.status(200).json({
+                    message: 'User profile was updated successfully!',
+                });
+            }
+        },
+    );
+    console.log(result);
+});
+
 export default router;
