@@ -56,7 +56,7 @@ router.get('/:email', async (req, res) => {
 });
 
 router.put('/:email', (req, res) => {
-    const result = User.updateMany(
+    const result = User.findOneAndUpdate(
         { email: req.params.email },
         {
             $set: {
