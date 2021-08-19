@@ -60,7 +60,8 @@ router.put('/:email', (req, res) => {
         { email: req.params.email },
         {
             $set: {
-                imageURL: req.body.imageURL,
+                // eslint-disable-next-line prettier/prettier
+                imageURL: req.body.imageURL === null ? 'https://i.ibb.co/KrCxTCv/user.png' : req.body.imageURL,
                 githubLink: req.body.githubLink,
                 location: req.body.location,
                 bio: req.body.bio,
