@@ -8,6 +8,8 @@
 
 - Client Live Site : [Henosis Live Site](henosis.vercel.app)
 
+- Server-side Code : [Henosis Server Repo](https://github.com/durjoybd14/henosis-server)
+
 - Server Live Site : [Henosis Server Live Site](https://intense-peak-24388.herokuapp.com/)
 
 ## Documentation
