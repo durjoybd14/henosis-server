@@ -61,7 +61,7 @@ router.put('/:email', (req, res) => {
         {
             $set: {
                 // eslint-disable-next-line prettier/prettier
-                imageURL: req.body.imageURL === null ? 'https://i.ibb.co/KrCxTCv/user.png' : req.body.imageURL,
+                imageURL: req.body.imageURL === null ? 'https://i.ibb.co/Cv782Sw/user.png' : req.body.imageURL,
                 githubLink: req.body.githubLink,
                 location: req.body.location,
                 bio: req.body.bio,
