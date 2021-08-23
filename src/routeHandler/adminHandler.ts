@@ -8,13 +8,14 @@ const Admins = mongoose.model('Admins', adminSchemas);
 
 router.post('/', (req, res) => {
     const newAdmin = new Admins(req.body);
-    newAdmin.save((err: mongoose.CallbackError) => {
+    newAdmin.save((err: mongoose.CallbackError, data: any) => {
         if (err) {
             res.status(500).json({
                 error: 'There was a server side error!',
             });
         } else {
             res.status(200).json({
+                data,
                 message: 'New Admin info was recorded successfully!',
             });
         }
