@@ -60,6 +60,8 @@ router.put('/:email', (req, res) => {
         { email: req.params.email },
         {
             $set: {
+                name: req.body.name,
+                email: req.params.email,
                 imageURL: req.body.imageURL || 'https://i.ibb.co/Cv782Sw/user.png',
                 githubLink: req.body.githubLink || 'https://github.com/username',
                 location: req.body.location || 'street no. cityname, countryname',
