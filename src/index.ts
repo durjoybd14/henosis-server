@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import adminHandler from './routeHandler/adminHandler';
 import paymentHandler from './routeHandler/paymentHandler';
 import userHandler from './routeHandler/userHandler';
+import userImageHandler from './routeHandler/userImageHandler';
 import workspaceHandler from './routeHandler/workspaceHandler';
 import { app, io, server } from './socket/socket';
 import handleSprint from './socketHandler/sprint';
@@ -35,6 +36,7 @@ mongoose
 // all routes
 app.use('/payment', paymentHandler);
 app.use('/user', userHandler);
+app.use('/userImage', userImageHandler);
 app.use('/admin', adminHandler);
 app.use('/workspace', workspaceHandler);
 
