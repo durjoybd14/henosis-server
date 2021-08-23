@@ -36,7 +36,7 @@ mongoose
 // all routes
 app.use('/payment', paymentHandler);
 app.use('/user', userHandler);
-app.use('/userImage', userImageHandler);
+app.use('/userimage', userImageHandler);
 app.use('/admin', adminHandler);
 app.use('/workspace', workspaceHandler);
 
