@@ -52,4 +52,18 @@ router.post('/', (req, res) => {
         });
 });
 
+router.get('/:email', async (req, res) => {
+    try {
+        const data = await Payment.find({ email: req.params.email });
+        res.status(200).json({
+            data,
+            message: 'Data collected',
+        });
+    } catch (err) {
+        res.status(500).json({
+            error: 'There was a server side error',
+        });
+    }
+});
+
 export default router;
