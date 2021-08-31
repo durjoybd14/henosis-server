@@ -8,6 +8,7 @@ const sprintSchema = new Schema({
             currentStatus: String,
             dueDate: Date,
             assignedMember: [String],
+            subtasks: [String],
         },
     ],
     sprintName: String,
