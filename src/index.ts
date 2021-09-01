@@ -66,5 +66,5 @@ function errorHandler(err: Error, req: Request, res: Response, next: NextFunctio
 app.use(errorHandler);
 
 server.listen(port, () => {
-    console.log(`Boss! I am listening at http://localhost:${port}`);
+    console.log(`Hello Boss! I am listening at http://localhost:${port}`);
 });
