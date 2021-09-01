@@ -10,6 +10,7 @@ import userImageHandler from './routeHandler/userImageHandler';
 import workspaceHandler from './routeHandler/workspaceHandler';
 import { app, io, server } from './socket/socket';
 import handleSprint from './socketHandler/sprint';
+import sprintWorkspaceHandler from './routeHandler/sprintWorkspaceHandler';
 import { createWorkspace, singleWorkspace, userWorkspaces } from './socketHandler/workspace';
 
 config();
@@ -39,6 +40,7 @@ app.use('/user', userHandler);
 app.use('/userimage', userImageHandler);
 app.use('/admin', adminHandler);
 app.use('/workspace', workspaceHandler);
+app.use('/sprint', sprintWorkspaceHandler);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Henosis server is running');
