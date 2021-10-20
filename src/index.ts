@@ -5,12 +5,13 @@ import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import adminHandler from './routeHandler/adminHandler';
 import paymentHandler from './routeHandler/paymentHandler';
+import sprintWorkspaceHandler from './routeHandler/sprintWorkspaceHandler';
 import userHandler from './routeHandler/userHandler';
 import userImageHandler from './routeHandler/userImageHandler';
 import workspaceHandler from './routeHandler/workspaceHandler';
 import { app, io, server } from './socket/socket';
+import handleChat from './socketHandler/handleChat';
 import handleSprint from './socketHandler/sprint';
-import sprintWorkspaceHandler from './routeHandler/sprintWorkspaceHandler';
 import { createWorkspace, singleWorkspace, userWorkspaces } from './socketHandler/workspace';
 
 config();
@@ -25,7 +26,7 @@ app.use(cors());
 // database connection with mongoose
 mongoose
     .connect(
-        `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ghclx.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+        `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ernz8.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
@@ -50,6 +51,7 @@ app.get('/', (req: Request, res: Response) => {
 io.of('/create-workspace').on('connection', createWorkspace);
 io.of('/workspace').on('connection', singleWorkspace);
 io.of('/user-workspaces').on('connection', userWorkspaces);
+io.of('/chat').on('connection', handleChat);
 
 // sprint section
 io.of('/sprint').on('connection', handleSprint);
