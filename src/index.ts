@@ -26,7 +26,7 @@ app.use(cors());
 // database connection with mongoose
 mongoose
     .connect(
-        `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ernz8.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+        `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jxckb.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
